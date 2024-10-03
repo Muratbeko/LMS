@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transactions</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        /* Your existing styles */
+        .header {
+            background-color: #f5f5f5;
+            padding: 10px;
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+        }
+        .header a {
+            color: #337ab7;
+            text-decoration: none;
+        }
+        .header a:hover {
+            text-decoration: underline;
+        }
+        .btn {
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f5f5f5;
+            color: #337ab7;
+        }
+        .btn:hover {
+            background-color: #eee;
+            color: #23527c;
+        }
+        .btn-light {
+            background-color: #f5f5f5;
+            color: #337ab7;
+            border: none;
+        }
+        .btn-light:hover {
+            background-color: #eee;
+            color: #23527c;
+        }
+        .form-label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .transaction-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .transaction-list th,.transaction-list td {
+            text-align: center;
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .transaction-list th {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header with logout and home buttons -->
+<div class="header">
+    <a href="/user/home2" class="btn btn-light">Home</a>
+    <a href="/logout" class="btn btn-light">Logout</a>
+</div>
+
+<!-- Main content -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Form to add new transaction -->
+            <form th:action="@{/templates/user/transactions/save}" th:object="${transaction}" method="post">
+                <h2 class="mt-4">Add New Transaction</h2>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" id="amount" name="amount" class="form-control" th:field="*{amount}" required />
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="datetime-local" id="date" name="date" class="form-control" th:field="*{date}" readonly />
+                </div>
+                <div class="mb-3">
+                    <label for="paymentMethod" class="form-label">Payment Method</label>
+                    <input type="text" id="paymentMethod" name="paymentMethod" class="form-control" th:field="*{paymentMethod}" required />
+                </div>
+                <div class="mb-3">
+                    <label for="agent" class="form-label">Agent</label>
+                    <select id="agent" name="agent" class="form-select" th:field="*{agent}" required>
+                        <option value="" disabled selected>Select Agent</option>
+                        <option th:each="agent : ${agents}" th:value="${agent.agentId}" th:text="${agent.name}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="service" class="form-label">Service</label>
+                    <select id="service" name="service" class="form-select" th:field="*{service}" required>
+                        <option value="" disabled selected>Select Service</option>
+                        <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.serviceName}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-light">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-12">
+            <!-- Table displaying transactions -->
+            <h2 class="mt-4">Transaction List</h2>
+            <div class="transaction-list">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Payment Method</th>
+                        <th>Agent</th>
+                        <th>Service</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="transaction : ${transactions}">
+                        <td th:text="${transaction.id}"></td>
+                        <td th:text="${transaction.amount}"></td>
+                        <td th:text="${transaction.date}"></td>
+                        <td th:text="${transaction.paymentMethod}"></td>
+                        <td th:text="${transaction.agent.name}"></td>
+                        <td th:text="${transaction.service.serviceName}"></td>
+                        <td>
+                            <!-- Edit button -->
+                            <a th:href="@{/templates/user/transactions/edit/{id}(id=${transaction.id})}" class="btn btn-light btn-sm">Edit</a>
+                            <!-- Delete button -->
+                            <form th:action="@{/templates/user/transactions/delete/{id}(id=${transaction.id})}" method="post" style="display:inline;">
+                                <input type="hidden" name="_method" value="delete"/>
+                                <button type="submit" class="btn btn-light btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('date');
+
+        function updateDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = ('0' + (now.getMonth() + 1)).slice(-2);
+            const day = ('0' + now.getDate()).slice(-2);
+            const hours = ('0' + now.getHours()).slice(-2);
+            const minutes = ('0' + now.getMinutes()).slice(-2);
+            const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            dateInput.value = formattedDateTime;
+        }
+
+        updateDateTime(); // Set initial value
+        setInterval(updateDateTime, 60000); // Update every minute
+    });
+</script>
+
+<script src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

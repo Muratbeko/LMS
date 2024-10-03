@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create User Role</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      margin: -20px -20px 20px -20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 100%;
+    }
+    button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
+    }
+    a {
+      color: #333;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    a:hover {
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Create User Role</h1>
+  <form th:action="@{/admin/user-role}" th:object="${userRole}" method="post">
+    <div>
+      <label for="user">User:</label>
+      <select id="user" th:field="*{user}">
+        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+      </select>
+    </div>
+    <div>
+      <label for="role">Role:</label>
+      <select id="role" th:field="*{role}">
+        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+      </select>
+    </div>
+    <button type="submit">Create</button>
+  </form>
+  <a href="/admin/user-role">Back to list</a>
+</div>
+</body>
+</html>

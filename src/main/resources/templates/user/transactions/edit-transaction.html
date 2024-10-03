@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Transaction</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Edit Transaction</h1>
+
+    <!-- Form to edit existing transaction -->
+    <form th:action="@{/user/transactions/save}" th:object="${transaction}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="number" id="amount" name="amount" class="form-control" th:field="*{amount}" required>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="datetime-local" id="date" name="date" class="form-control" th:field="*{date}" required>
+        </div>
+        <div class="mb-3">
+            <label for="paymentMethod" class="form-label">Payment Method</label>
+            <input type="text" id="paymentMethod" name="paymentMethod" class="form-control" th:field="*{paymentMethod}" required>
+        </div>
+        <div class="mb-3">
+            <label for="agent" class="form-label">Agent</label>
+            <select id="agent" name="agent" class="form-select" th:field="*{agent}" required>
+                <option value="" disabled>Select Agent</option>
+                <option th:each="agent : ${agents}" th:value="${agent.agentId}" th:text="${agent.name}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="service" class="form-label">Service</label>
+            <select id="service" name="service" class="form-select" th:field="*{service}" required>
+                <option value="" disabled>Select Service</option>
+                <option th:each="service : ${services}" th:value="${service.id}" th:text="${service.serviceName}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+    <a href="#" th:href="@{/user/transactions}" class="btn btn-secondary mt-4">Back to Transactions</a>
+</div>
+</body>
+</html>

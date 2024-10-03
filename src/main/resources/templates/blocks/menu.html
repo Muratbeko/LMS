@@ -1,0 +1,187 @@
+<div th:fragment="menu" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <!DOCTYPE HTML>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Frame 2</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                width: 250px;
+                background-color: #222;
+                color: #fff;
+                padding: 20px;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                position: fixed;
+                top: 0;
+                left: -350px;
+                height: 100%;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .content {
+                padding: 20px;
+                margin-left: 0; /* Reset margin-left to 0 */
+                transition: margin-left 0.3s ease;
+            }
+
+            .menu-open.content {
+                margin-left: 250px; /* Adjust margin-left when sidebar is open */
+            }
+
+            .sidebar h1 {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .sidebar li {
+                margin-bottom: 10px;
+            }
+
+            .sidebar a {
+                text-decoration: none;
+                color: #fff;
+            }
+
+            .content {
+                flex: 1;
+                padding: 20px;
+                margin-left: 50px;
+                transition: margin-left 0.3s ease;
+                position: relative; /* Добавлено для позиционирования */
+            }
+
+            .content h2 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+
+            .table-container {
+                margin-top: 20px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            .menu-button {
+                background-color: #000;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                padding: 10px;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                border-radius: 5px;
+            }
+
+            .menu-icon {
+                width: 20px;
+                height: 2px;
+                background-color: #fff;
+                display: block;
+                margin: 4px 0;
+                transition: transform 0.3s ease;
+            }
+
+            .menu-button.open .menu-icon:first-child {
+                transform: rotate(45deg);
+            }
+
+            .menu-button.open .menu-icon:nth-child(2) {
+                opacity: 0; /* Скрываем центральную линию при открытом меню */
+            }
+
+            .menu-button.open .menu-icon:last-child {
+                transform: rotate(-45deg);
+            }
+
+            .logo {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .logo img {
+                width: 100px;
+                height: auto;
+            }
+
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <button class="menu-button" onclick="toggleMenu()" id="menuButton">
+            <div class="menu-icon"></div>
+            <div class="menu-icon"></div>
+            <div class="menu-icon"></div>
+        </button>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+<!--                <img th:src="@{/img2/BTB-NEW-LOGO.png}" alt="BTB">-->
+            </div>
+            <h1>Меню</h1>
+            <ul>
+<!--                <li sec:authorize="hasRole('ADMIN')"><a href="/admin/home">Home</a></li>-->
+<!--                <li sec:authorize="hasRole('ADMIN')"><a href="/admin/transactions">Платежи</a></li>-->
+<!--                <li sec:authorize="hasRole('ADMIN')"><a href="/admin/suppliers">Поставщики</a></li>-->
+<!--                <li sec:authorize="hasRole('ADMIN')"><a href="/admin/agents">Агенты</a></li>-->
+<!--                <li sec:authorize="hasRole('ADMIN')"><a href="/admin/services">Продукты/Услуги</a></li>-->
+              <li sec:authorize="hasRole('ADMIN')"><a href="/admin/roles">Роли</a></li>
+<!--                <li sec:authorize="hasRole('ADMIN')"><a href="/admin/serviceofagent/">Сервисы агентов</a></li>-->
+               <li sec:authorize="hasRole('ADMIN')"><a href="/admin/user">Пользователи</a></li>
+              <li sec:authorize="hasRole('ADMIN')"><a href="/admin/user-role">Роли пользователей</a></li>
+<!--                <li sec:authorize="hasRole('ADMIN')"><a href="/admin/invoices">Счета</a></li>-->
+                <li><a href="/logout">Выход</a></li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var sidebar = document.getElementById('sidebar');
+            var menuButton = document.getElementById('menuButton');
+            var menuIcons = document.querySelectorAll('.menu-icon');
+
+            sidebar.classList.toggle('show');
+            menuButton.classList.toggle('open');
+            menuIcons.forEach(function(icon) {
+                icon.classList.toggle('open');
+            });
+            document.body.classList.toggle('menu-open'); // Добавляем класс для блокировки скролла основного контента
+        }
+    </script>
+    </body>
+    </html>
+</div>

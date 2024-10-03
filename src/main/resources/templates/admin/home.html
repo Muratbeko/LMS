@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Transactions</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('/img2/img_1.png');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #222;
+            color: #fff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: -250px; /* Полностью скрыть меню по умолчанию */
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.show {
+            left: 0; /* Отобразить меню при открытии */
+        }
+
+        .content {
+            padding: 20px;
+            margin-left: 0; /* Сбросить отступ слева по умолчанию */
+            transition: margin-left 0.3s ease;
+        }
+
+        .menu-open .content {
+            margin-left: 250px; /* Изменить отступ контента при открытом меню */
+        }
+
+        .menu-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-icon {
+            width: 30px;
+            height: 2px;
+            background-color: #fff;
+            margin: 6px 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Кнопка для открытия меню -->
+<button class="menu-button" onclick="toggleMenu()">☰</button>
+
+<!-- Боковое меню -->
+<div th:replace="~{blocks/menu :: menu}" class="sidebar" id="sidebar"></div>
+
+<!-- Основной контент -->
+
+    <div class="container">
+        <div class="header">
+            <h1>Admin Page</h1>
+        </div>
+        <div class="main-content">
+            <h2>Welcome to the Home Page</h2>
+            <p>Logged in successfully!</p>
+
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт для переключения бокового меню -->
+<script>
+    const menuButton = document.querySelector('.menu-button');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.querySelector('.content');
+
+    menuButton.addEventListener('click', toggleMenu);
+
+    // Проверить, было ли меню открыто на других страницах и сохранить его состояние
+    document.addEventListener('DOMContentLoaded', function() {
+        const isMenuOpen = localStorage.getItem('sidebarOpen');
+        if (isMenuOpen === 'true') {
+            sidebar.classList.add('show');
+            content.classList.add('menu-open');
+        }
+    });
+
+    function toggleMenu() {
+        sidebar.classList.toggle('show');
+        content.classList.toggle('menu-open');
+
+        // Сохранить состояние меню в localStorage
+        const isOpen = sidebar.classList.contains('show');
+        localStorage.setItem('sidebarOpen', isOpen ? 'true' : 'false');
+    }
+</script>
+
+</body>
+</html>

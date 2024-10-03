@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit User Role</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .button-group {
+            margin-top: 20px; /* add some space between the form and buttons */
+            text-align: center; /* center the buttons */
+        }
+
+        .button-group .button {
+            margin: 0 10px; /* add some space between the buttons */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .menu-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .menu-button:hover {
+            background-color: #444;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .sidebar.hide {
+            left: -200px;
+        }
+        .sidebar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            color: #ccc;
+        }
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+        .content.menu-open {
+            margin-left: 0;
+        }
+        form {
+            width: 100%;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #666; /* darker gray */
+            color: #fff; /* white text */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            pointer-events: auto; /* Ensure pointer events are active */
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #777; /* slightly darker gray on hover */
+        }
+    </style>
+</head>
+<body>
+<!-- Button to open menu -->
+<button class="menu-button" onclick="toggleMenu()">☰</button>
+
+<!-- Sidebar menu -->
+<div th:replace="~{blocks/menu :: menu}" id="sidebar"></div>
+
+<!-- Main content -->
+<div class="content container">
+    <div class="header">
+        <h1>Edit User Role</h1>
+    </div>
+    <form th:object="${userRole}">
+        <label for="username">Username:</label>
+        <input type="text" th:field="*{user.username}" id="username" />
+        <br />
+        <label for="roleName">Role Name:</label>
+        <input type="text" th:field="*{role.name}" id="roleName" />
+        <br />
+        <div class="button-group">
+            <button type="submit" class="button">Save Changes</button>
+            <a href="/admin/user-role" class="button">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Script for toggling sidebar menu and user actions
+<!-- Script for toggling sidebar menu and user actions -->
+<script>
+    const menuButton = document.querySelector('.menu-button');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.querySelector('.content');
+
+    menuButton.addEventListener('click', toggleMenu);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const isMenuOpen = localStorage.getItem('sidebarOpen');
+        if (isMenuOpen === 'true') {
+            sidebar.classList.add('show');
+            content.classList.add('menu-open');
+        }
+    });
+
+    function toggleMenu() {
+        sidebar.classList.toggle('show');
+        content.classList.toggle('menu-open');
+        const isOpen = sidebar.classList.contains('show');
+        localStorage.setItem('sidebarOpen', isOpen ? 'true' : 'false');
+    }
+</script>
+</body>
+</html>

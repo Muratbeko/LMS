@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Role</title>
+</head>
+<body>
+
+<div th:insert="blocks/menu::menu"></div>
+<div class="container">
+    <div class="content" id="mainContent">
+        <h2>Edit Role</h2>
+        <form th:action="@{/templates/admin/roles/save}" th:object="${role}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <label for="roleName">Role Name:</label>
+            <input type="text" id="roleName" th:field="*{roleName}" /><br>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

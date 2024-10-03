@@ -1,0 +1,119 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    overflow-x: hidden; /* Добавлено для избежания горизонтального скролла */
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #222;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: -350px;
+    height: 100%;
+    transition: left 0.3s ease;
+    z-index: 1000; /* Поместить поверх остального контента */
+}
+
+.sidebar.show {
+    left: 0;
+}
+
+.sidebar h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.content {
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.content h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.menu-button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001; /* Поместить поверх бокового меню */
+    border-radius: 5px;
+}
+
+.menu-icon {
+    width: 20px;
+    height: 2px;
+    background-color: #fff;
+    display: block;
+    margin: 4px 0;
+    transition: transform 0.3s ease;
+}
+
+.menu-button.open .menu-icon:first-child {
+    transform: rotate(45deg);
+}
+
+.menu-button.open .menu-icon:nth-child(2) {
+    opacity: 0; /* Скрываем центральную линию при открытом меню */
+}
+
+.menu-button.open .menu-icon:last-child {
+    transform: rotate(-45deg);
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo img {
+    width: 100px;
+    height: auto;
+}
+
+@media (min-width: 992px) {
+    .content {
+        margin-left: 250px; /* Adjusted to avoid content going below sidebar */
+    }
+}
